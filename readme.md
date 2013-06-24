@@ -28,14 +28,18 @@ For AMD support define backboneRequireLocation and underscoreRequireLocation to 
   var Router = Backbone.QueryRouter.extend({
 
     routes: {
-      '' : 'index'
+      'test*query' : 'query'
     },
 
-    index: function(path, params) {
-      console.log(params, arguments);
+    query: function(query, params) {
+      console.log(params);
     }
 
   });
+
+  var router = new Router();
+
+  Backbone.history.start();
 ```
 
 Updated On: June 24th, 2013
