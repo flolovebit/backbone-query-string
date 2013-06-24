@@ -10,7 +10,7 @@ Add query-string.js
 For AMD support define backboneRequireLocation and underscoreRequireLocation to the AMD file locations. Default: 'backbone' & 'underscore'
 
 #use
-`/**
+```/**
  * @class : router
  * @info : subclass of Backbone.Router
  */
@@ -24,6 +24,6 @@ For AMD support define backboneRequireLocation and underscoreRequireLocation to 
 		}
 
 	});
-`
+```
 
 Updated On: June 24th, 2013
