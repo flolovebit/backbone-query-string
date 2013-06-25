@@ -205,6 +205,7 @@
      */
     _extractParameters: function(route, fragment) {
 
+      var extraction;
       var uri = fragment;
 
       /**
@@ -264,14 +265,15 @@
       }
 
       // remove the last item of array
-      callbackParams = callbackParams.slice(0, callbackParams.length - 1);
+      // remove any null values
+      callbackParams = _.without(callbackParams.slice(0, callbackParams.length - 1), null);
 
       /**
        * info:
        *   call super class method (_extractParameters)
        */
-      var extraction = _.map(callbackParams, function(param, key) {
-        return param ? decodeURIComponent(param) : null;
+      extraction = _.map(callbackParams, function(param, key) {
+        return _.isString(param) ? decodeURIComponent(param) : null;
       });
 
       /**
@@ -298,7 +300,7 @@
    *   version information for future use
    * @type {String}
    */
-  Backbone.QueryRouter.VERSION = '0.2.0';
+  Backbone.QueryRouter.VERSION = '0.3.0';
 
   /**
    * info:
