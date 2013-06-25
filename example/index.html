@@ -1,0 +1,43 @@
+<html>
+
+  <head>
+
+    <title>Backbone Query-String</title>
+
+    <script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+    <script type="text/javascript" src="underscore-min.js"></script>
+    <script type="text/javascript" src="backbone-min.js"></script>
+    <script type="text/javascript" src="query-string.js"></script>
+
+    <script type="text/javascript">
+
+      var Router = Backbone.QueryRouter.extend({
+
+        routes: {
+          '' : 'query',
+          'test' : 'query',
+          ':test' : 'query',
+          ':test/:test2' : 'query',
+          ':test/*hi/' : 'query',
+          '*test' : 'query'
+        },
+
+        query: function() {
+          console.log(arguments);
+        }
+
+      });
+
+      var router = new Router();
+
+      Backbone.history.start();
+
+    </script>
+
+  </head>
+
+  <body>
+    check console until more streamlined test
+  </body>
+
+</html>
