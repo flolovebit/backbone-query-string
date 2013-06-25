@@ -8,18 +8,20 @@ AMD supported (see config).
 #install
 
 AMD:
-  ```
-  require(['query-string'], function(Backbone) {
-    console.log(Backbone.QueryRouter);
-  });
-  ```
+
+If you are using requirejs or amd you can require query-string; ensure that you set your backbone and underscore vars in query-string.js (backboneRequireLocation && underscoreRequireLocation);
+
+```
+require(['query-string'], function(Backbone) {
+  console.log(Backbone.QueryRouter);
+});
+```
+
+Inline Script:
 
 Add query-string.js:
 `<script type="text/javascript" src="query-string.js"></script>`
 depends on jquery, underscore, and backbone to exist on page first
-
-#config
-For AMD support define backboneRequireLocation and underscoreRequireLocation to the AMD file locations. Default: 'backbone' & 'underscore'
 
 #example
 ```
@@ -30,11 +32,16 @@ For AMD support define backboneRequireLocation and underscoreRequireLocation to 
   var Router = Backbone.QueryRouter.extend({
 
     routes: {
-      'test*query' : 'query'
+      '' : 'query',
+      'test' : 'query',
+      ':test' : 'query',
+      ':test/:test2' : 'query',
+      ':test/*hi/' : 'query',
+      '*test' : 'query'
     },
 
-    query: function(query, params) {
-      console.log(params);
+    query: function() {
+      console.log(arguments);
     }
 
   });
