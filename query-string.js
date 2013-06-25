@@ -33,8 +33,8 @@
  */
 (function(root, factory) {
 
-  var backboneRequireLocation = 'backbone';
-  var underscoreRequireLocation = 'underscore';
+  var backboneRequireLocation = 'vendor/backbone';
+  var underscoreRequireLocation = 'vendor/underscore';
 
   if (typeof define === 'function' && define.amd) {
     // AMD
@@ -205,6 +205,7 @@
      */
     _extractParameters: function(route, fragment) {
 
+      var extraction;
       var uri = fragment;
 
       /**
@@ -270,7 +271,7 @@
        * info:
        *   call super class method (_extractParameters)
        */
-      var extraction = _.map(callbackParams, function(param, key) {
+      extraction = _.map(callbackParams, function(param, key) {
         return param ? decodeURIComponent(param) : null;
       });
 
@@ -287,7 +288,7 @@
        * return:
        *   array object to router callback
        */
-      return extraction;
+      return _.without(extraction, null);
 
     }
 
@@ -298,7 +299,7 @@
    *   version information for future use
    * @type {String}
    */
-  Backbone.QueryRouter.VERSION = '0.2.0';
+  Backbone.QueryRouter.VERSION = '0.3.0';
 
   /**
    * info:
