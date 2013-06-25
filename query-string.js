@@ -33,8 +33,8 @@
  */
 (function(root, factory) {
 
-  var backboneRequireLocation = 'vendor/backbone';
-  var underscoreRequireLocation = 'vendor/underscore';
+  var backboneRequireLocation = 'backbone';
+  var underscoreRequireLocation = 'underscore';
 
   if (typeof define === 'function' && define.amd) {
     // AMD
