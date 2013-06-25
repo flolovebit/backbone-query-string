@@ -170,9 +170,12 @@
 
       return obj;
 
-
     },
 
+    /**
+     * info:
+     *   generate regex pattern given route
+     */
     _routeToRegExp: function(route) {
 
       route = route.replace(escapeRegExp, '\\$&');
