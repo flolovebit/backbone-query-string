@@ -9,7 +9,7 @@ AMD supported (see config).
 
 AMD:
 
-If you are using requirejs or amd you can require query-string; ensure that you set your backbone and underscore vars in query-string.js (backboneRequireLocation && underscoreRequireLocation);
+If you are using requirejs or amd you can require query-string; ensure that you set your backbone and underscore vars in query-string.js (backboneRequireLocation && underscoreRequireLocation).
 
 ```
 require(['query-string'], function(Backbone) {
@@ -21,7 +21,7 @@ Inline Script:
 
 Add query-string.js:
 `<script type="text/javascript" src="query-string.js"></script>`
-depends on jquery, underscore, and backbone to exist on page first
+depends on jquery, underscore, and backbone to exist on page first.
 
 #example
 ```
