@@ -29,7 +29,7 @@
  *   set backboneRequireLocation for amd backbone location
  *   set underscoreRequireLocation for amd underscore location
  * version:
- *   current: 0.2
+ *   current: 0.4.1
  */
 (function(root, factory) {
 
@@ -246,8 +246,7 @@
       }
 
       // result array from regex execution
-      var callbackParams = route.exec(uri).slice(1);
-
+      var callbackParams = route.exec(uri);
 
       // only combine last value of array with matched query-string if
       // the array length is greater than one, implying that
@@ -255,24 +254,35 @@
       // the uri (that doesn't contain the actual parsed params object string)
       // and only contains other query-strings objects that the user may want
       // to include in the path value
-      if (callbackParams.length > 1) {
-        // combine query string with soon to be last item: before slice occurs
-        callbackParams[callbackParams.length - 2] = callbackParams[callbackParams.length - 2] + callbackParams[callbackParams.length - 1];
+      if (_.isArray(callbackParams)) {
+
+        callbackParams = callbackParams.slice(1);
+
+        if (callbackParams.length > 1) {
+          // combine query string with soon to be last item: before slice occurs
+          callbackParams[callbackParams.length - 2] = callbackParams[callbackParams.length - 2] + callbackParams[callbackParams.length - 1];
+        }
+
+        else {
+          callbackParams.unshift(uri);
+        }
+
+        // remove the last item of array
+        // remove any null values
+        callbackParams = _.without(callbackParams.slice(0, callbackParams.length - 1), null);
+
       }
 
       else {
-        callbackParams.unshift(uri);
+        callbackParams = [];
       }
-
-      // remove the last item of array
-      callbackParams = callbackParams.slice(0, callbackParams.length - 1);
 
       /**
        * info:
        *   call super class method (_extractParameters)
        */
       extraction = _.map(callbackParams, function(param, key) {
-        return param ? decodeURIComponent(param) : null;
+        return _.isString(param) ? decodeURIComponent(param) : null;
       });
 
       /**
@@ -288,7 +298,7 @@
        * return:
        *   array object to router callback
        */
-      return _.without(extraction, null);
+      return extraction;
 
     }
 
@@ -299,7 +309,7 @@
    *   version information for future use
    * @type {String}
    */
-  Backbone.QueryRouter.VERSION = '0.3.0';
+  Backbone.QueryRouter.VERSION = '0.4.1';
 
   /**
    * info:
