@@ -265,8 +265,7 @@
       }
 
       // remove the last item of array
-      // remove any null values
-      callbackParams = _.without(callbackParams.slice(0, callbackParams.length - 1), null);
+      callbackParams = callbackParams.slice(0, callbackParams.length - 1);
 
       /**
        * info:
@@ -289,7 +288,7 @@
        * return:
        *   array object to router callback
        */
-      return extraction;
+      return _.without(extraction, null);
 
     }
 
