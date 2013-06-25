@@ -28,6 +28,8 @@
  * config:
  *   set backboneRequireLocation for amd backbone location
  *   set underscoreRequireLocation for amd underscore location
+ * version:
+ *   current: 0.2
  */
 (function(root, factory) {
 
@@ -37,8 +39,6 @@
   if (typeof define === 'function' && define.amd) {
     // AMD
     define([backboneRequireLocation, underscoreRequireLocation], function(Backbone, _) {
-      // Export global even in AMD case in case this script is loaded with
-      // others that may still expect a global Backbone.
       return factory(Backbone, _);
     });
 
@@ -290,6 +290,17 @@
 
   });
 
+  /**
+   * info:
+   *   version information for future use
+   * @type {String}
+   */
+  Backbone.QueryRouter.VERSION = '0.2.0';
+
+  /**
+   * info:
+   *   go ahead and return Backbone
+   */
   return Backbone;
 
 }));

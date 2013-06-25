@@ -1,6 +1,8 @@
 #Backbone Query-String
 A extension of Backbone.Router that defines a new sub class. It will supply a query-string params object in route callbacks.
 
+Current Version: 0.2
+
 AMD supported (see config).
 
 #install
