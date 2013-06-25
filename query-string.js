@@ -31,8 +31,8 @@
  */
 (function(root, factory) {
 
-  var backboneRequireLocation = 'backbone';
-  var underscoreRequireLocation = 'underscore';
+  var backboneRequireLocation = 'vendor/backbone';
+  var underscoreRequireLocation = 'vendor/underscore';
 
   if (typeof define === 'function' && define.amd) {
     // AMD
@@ -51,6 +51,11 @@
   }
 
 }(this, function(Backbone, _) {
+
+  var optionalParam = /\((.*?)\)/g;
+  var namedParam    = /(\(\?)?:\w+/g;
+  var splatParam    = /\*\w+/g;
+  var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
   /**
    * info:
@@ -168,6 +173,21 @@
 
     },
 
+    _routeToRegExp: function(route) {
+
+      route = route.replace(escapeRegExp, '\\$&');
+      route = route.replace(optionalParam, '(?:$1)?');
+
+      route = route.replace(namedParam, function(match, optional) {
+        return optional ? match : '([^\/]+)';
+      });
+
+      route = route.replace(splatParam, '(.*?)');
+
+      return new RegExp('^' + route + '($|\\?.+)');
+
+    },
+
     /**
      * info:
      *   method for extracting query-string then
@@ -221,11 +241,35 @@
 
       }
 
+      // result array from regex execution
+      var callbackParams = route.exec(uri).slice(1);
+
+
+      // only combine last value of array with matched query-string if
+      // the array length is greater than one, implying that
+      // only a query-string match was found in regex; otherwise, just add
+      // the uri (that doesn't contain the actual parsed params object string)
+      // and only contains other query-strings objects that the user may want
+      // to include in the path value
+      if (callbackParams.length > 1) {
+        // combine query string with soon to be last item: before slice occurs
+        callbackParams[callbackParams.length - 2] = callbackParams[callbackParams.length - 2] + callbackParams[callbackParams.length - 1];
+      }
+
+      else {
+        callbackParams.unshift(uri);
+      }
+
+      // remove the last item of array
+      callbackParams = callbackParams.slice(0, callbackParams.length - 1);
+
       /**
        * info:
        *   call super class method (_extractParameters)
        */
-      var extraction = Backbone.Router.prototype._extractParameters.apply(this, [route, uri]);
+      var extraction = _.map(callbackParams, function(param, key) {
+        return param ? decodeURIComponent(param) : null;
+      });
 
       /**
        * info:
