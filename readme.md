@@ -41,6 +41,7 @@ depends on jquery, underscore, and backbone to exist on page first.
     },
 
     query: function() {
+      // the last argument will be a object either with query parameters or empty
       console.log(arguments);
     }
 
