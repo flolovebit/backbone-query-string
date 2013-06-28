@@ -29,7 +29,7 @@
  *   set backboneRequireLocation for amd backbone location
  *   set underscoreRequireLocation for amd underscore location
  * version:
- *   current: 0.4.1
+ *   current: 0.5.0
  */
 (function(root, factory) {
 
@@ -178,14 +178,13 @@
      */
     _routeToRegExp: function(route) {
 
-      route = route.replace(escapeRegExp, '\\$&');
-      route = route.replace(optionalParam, '(?:$1)?');
-
-      route = route.replace(namedParam, function(match, optional) {
-        return optional ? match : '([^\/]+)';
-      });
-
-      route = route.replace(splatParam, '(.*?)');
+      route =
+        route.replace(escapeRegExp, '\\$&')
+        .replace(optionalParam, '(?:$1)?')
+        .replace(namedParam, function(match, optional) {
+          return optional ? match : '([^\/]+)';
+        })
+        .replace(splatParam, '(.*?)');
 
       return new RegExp('^' + route + '($|\\?.+)');
 
@@ -205,100 +204,104 @@
      */
     _extractParameters: function(route, fragment) {
 
-      var extraction;
-      var uri = fragment;
+      var match;
+      var result;
+      var queryStringFull;
+      var queryStringPrefix;
+      var queryString;
+      var extract;
+      var params;
 
       /**
-       * info:
-       *   obtain the last indexed position
-       *   of a character:questionmark
+       * [info]
+       *   Attempt to match the regex pattern
+       *   then set the returned value to match.
        */
-      var indexOfQuestionMark = fragment.lastIndexOf('?');
+      match = fragment.match(route);
 
       /**
-       * info:
-       *   params object defaults to
-       *   a standard object
+       * [info]
+       *   If match is not null
+       *   slice the array, otherwise fallback to array.
+       * [default]
+       *   array
        */
-      var params = {};
+      result = _.isArray(match) ? match.slice(1) : [];
 
       /**
-       * if:
-       *   querystring exists then
-       *   parse it and make it an object
-       * do:
-       *   remove query-string from uri
-       *   store returned object in params
+       * [info]
+       *   The queryStringFull is the last
+       *   array value of the returned regex pattern,
+       *   otherwise, default to string.
+       * [default]
+       *   string
        */
-      if (indexOfQuestionMark >= 0) {
-
-        var paramsString;
-
-        // make paramsString by striping values before index of last question mark
-        paramsString = fragment.substring((indexOfQuestionMark + 1), fragment.length);
-
-        // make uri by striping saving everything before index of last question mark
-        uri = fragment.substring(0, indexOfQuestionMark);
-
-        // store parsed query-string in object
-        params = this._parseParams(paramsString);
-
-      }
-
-      // result array from regex execution
-      var callbackParams = route.exec(uri);
-
-      // only combine last value of array with matched query-string if
-      // the array length is greater than one, implying that
-      // only a query-string match was found in regex; otherwise, just add
-      // the uri (that doesn't contain the actual parsed params object string)
-      // and only contains other query-strings objects that the user may want
-      // to include in the path value
-      if (_.isArray(callbackParams)) {
-
-        callbackParams = callbackParams.slice(1);
-
-        if (callbackParams.length > 1) {
-          // combine query string with soon to be last item: before slice occurs
-          callbackParams[callbackParams.length - 2] = callbackParams[callbackParams.length - 2] + callbackParams[callbackParams.length - 1];
-        }
-
-        else {
-          callbackParams.unshift(uri);
-        }
-
-        // remove the last item of array
-        // remove any null values
-        callbackParams = _.without(callbackParams.slice(0, callbackParams.length - 1), null);
-
-      }
-
-      else {
-        callbackParams = [];
-      }
+      queryStringFull = _.last(result) || '';
 
       /**
-       * info:
-       *   call super class method (_extractParameters)
+       * [info]
+       *   This is the last query string in the fragement
+       *   that we must send as an object to route callbacks.
+       * [default]
+       *   string
        */
-      extraction = _.map(callbackParams, function(param, key) {
+      queryString = _.last(queryStringFull.split('?')) || '';
+
+      /**
+       * [info]
+       *   Strip the queryString above from the queryStringFull
+       *   to only keep the prefix that we will attach the last
+       *   parameters of the matched route.
+       */
+      queryStringPrefix = queryStringFull.substring(0, (queryStringFull.lastIndexOf('?')));
+
+      /**
+       * [info]
+       *   Create an object from queryString, which is only
+       *   the last query string in the fragement by parsing
+       *   it into an key/value object.
+       */
+      params = this._parseParams(queryString) || {};
+
+      /**
+       * [info]
+       *   Create an array map from the result values
+       *   of the matched regex route, which should contain
+       *   all matched Backbone.Route routes.
+       * [default]
+       *   Array
+       */
+      extract = _.map(result, function(param, key) {
         return _.isString(param) ? decodeURIComponent(param) : null;
       });
 
       /**
-       * info:
-       *   add the params object
-       *   to the array of values to be returned
-       * important:
-       *   params should always be an object
+       * [info]
+       *   Remove the last array item because we
+       *   no longer need the matched query-string.
+       * [default]
+       *   String
        */
-      extraction.push(params);
+      extract = extract.slice(0, (extract.length - 1));
 
       /**
-       * return:
-       *   array object to router callback
+       * [info]
+       *   Replace the last array item with the
+       *   queryStringPrefix which is the query-string
+       *   values without the last query-string. It may
+       *   be a value the user wants.
        */
-      return extraction;
+      extract[(extract.length - 1)] = extract[(extract.length - 1)] + queryStringPrefix;
+
+      /**
+       * [info]
+       *   Finally, push the params object into
+       *   the response array we will send as a return
+       *   to the route callback methods.
+       */
+      extract.push(params);
+
+      return extract;
 
     }
 
@@ -309,7 +312,7 @@
    *   version information for future use
    * @type {String}
    */
-  Backbone.QueryRouter.VERSION = '0.4.1';
+  Backbone.QueryRouter.VERSION = '0.5.0';
 
   /**
    * info:
