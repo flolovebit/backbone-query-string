@@ -7,15 +7,20 @@ Current Version: 0.5.0
 
 Inline Script:
 
-Add query-string.js:
-`<script type="text/javascript" src="query-string.js"></script>`
-depends on jquery, underscore, and backbone to exist on page first.
+Add query-string.js before backbone dependancies.
+
+```html
+<script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+<script type="text/javascript" src="underscore-min.js"></script>
+<script type="text/javascript" src="backbone-min.js"></script>
+<script type="text/javascript" src="query-string.js"></script>
+```
 
 AMD:
 
 If you are using requirejs or amd you can require query-string; ensure that you set your backbone and underscore vars in query-string.js (variables backboneRequireLocation && underscoreRequireLocation).
 
-```
+```javascript
 require(['query-string'], function(Backbone) {
   console.log(Backbone.QueryRouter);
 });
@@ -29,7 +34,7 @@ Exposes `Backbone.QueryRouter` method to be used as Backbone.Router would.
 
 #use
 Use your router as documented by Backbone.Router but in callbacks the last argument will always be a param object.
-```
+```javascript
 {
 
   _index: function(params) {
