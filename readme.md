@@ -36,7 +36,7 @@ Use your router as documented by Backbone.Router but in linked callbacks the las
 
   _index: function(params) {
     console.log('The last parameter is always params', params);
-  };
+  }
 
 }
 ```
