@@ -8,37 +8,57 @@
     <script type="text/javascript" src="underscore-min.js"></script>
     <script type="text/javascript" src="backbone-min.js"></script>
     <script type="text/javascript" src="../query-string.js"></script>
+    <script type="text/javascript" src="mustache.js"></script>
 
     <script type="text/javascript">
 
-      var Router = Backbone.QueryRouter.extend({
+      jQuery(document).ready(function() {
 
-        routes: {
-          '' : 'query',
-          'test' : 'query',
-          ':test' : 'query',
-          ':test/:test2/' : 'query',
-          ':test/*hi/' : 'query',
-          '*test' : 'query'
-        },
+          var Router = Backbone.QueryRouter.extend({
 
-        query: function() {
-          // the last argument will be a object either with query parameters or empty
-          console.log(arguments);
-        }
+          routes: {
+            '' : 'query',
+            'test' : 'query',
+            ':test/' : 'query',
+            '*splat' : 'query'
+          },
+
+          query: function() {
+
+            console.log(arguments);
+
+            var args = Array.prototype.slice.call(arguments);
+
+            var output = Mustache.render('{{#argsArray}} * {{.}} <br /> {{/argsArray}} {{params}}', {
+              argsArray: args.slice(0, arguments.length - 1),
+              params: JSON.stringify(args[arguments.length - 1])
+            });
+
+
+            jQuery('.result').html(output);
+
+          }
+
+        });
+
+        var router = new Router();
+
+        Backbone.history.start();
 
       });
-
-      var router = new Router();
-
-      Backbone.history.start();
 
     </script>
 
   </head>
 
   <body>
-    check console until more streamlined test
+    <p>check console until more streamlined test</p>
+    <p><a href="#/?param=1&amp;param2=2">index</a> &mdash; ''</p>
+    <p><a href="#/test?friends=fun&amp;kindle=books">defined route &mdash; 'test'</a></p>
+    <p><a href="#/some-param-part/?part=true">param part &mdash; ':id/'</a></p>
+    <p><a href="#/asdasdasdas?we-caught-all=yeah">splat (catch-all) &mdash; '*routed/'</a></p>
+    <p>Please note that param parts are a <span style="text-decoration: underline">catch-all</span> reference <b>:id</b> and if you want to use query-string with them supply a directory separator like <b>:id/</b> I encourage people to try different routes by editing this file.</p>
+    <code><pre><p class="result"></p></pre></code>
   </body>
 
 </html>
