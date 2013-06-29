@@ -20,6 +20,19 @@ AMD:
 
 If you are using requirejs or amd you can require query-string; ensure that you set your backbone and underscore vars in query-string.js (variables backboneRequireLocation && underscoreRequireLocation).
 
+In query-string.js: you will see the variables located at the top.
+
+```javascript
+(function(root, factory) {
+
+  var backboneRequireLocation = 'backbone';
+  var underscoreRequireLocation = 'underscore';
+
+  ...
+```
+
+In any AMD app: used to load query-string which applies a new method to Backbone and retuns the core Backbone Object.
+
 ```javascript
 require(['query-string'], function(Backbone) {
   console.log(Backbone.QueryRouter);
