@@ -29,7 +29,7 @@
 
             var args = Array.prototype.slice.call(arguments);
 
-            var output = Mustache.render('{{#argsArray}} * {{.}} <br /> {{/argsArray}} {{params}}', {
+            var output = Mustache.render('Routes: <br /> {{#argsArray}} * {{.}} <br /> {{/argsArray}} {{^argsArray}} None to list <br /> {{/argsArray}} <br /> Params: {{params}}', {
               argsArray: args.slice(0, arguments.length - 1),
               params: JSON.stringify(args[arguments.length - 1])
             });
