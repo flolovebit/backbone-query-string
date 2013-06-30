@@ -1,7 +1,8 @@
 #Backbone Query-String
-A extension of Backbone.Router that defines a new sub class. It will supply a query-string params object in route callbacks.
+A Backbone.Router extension that defines a new sub-class/constuctor-function. It will supply a query-string params object in route callbacks. The query-string is provided in the following format: `#/url/?query=1&string=hi`
 
-Current Version: 0.5.0
+Current Version: `0.5.0`
+Tested with Backbone: `1.0 >=`
 
 #install
 
@@ -46,7 +47,7 @@ Check the example/ folder for use.
 Exposes `Backbone.QueryRouter` method to be used as Backbone.Router would.
 
 #use
-Use your router as documented by Backbone.Router but in callbacks the last argument will always be a param object.
+Use your router as documented by Backbone.Router but in callbacks the last argument will always be a param object. The query string is provided in the following format: `#/url/?query=1&string=hi`
 ```javascript
 {
 
