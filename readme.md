@@ -32,7 +32,7 @@ In query-string.js: you will see the variables located at the top.
   ...
 ```
 
-In a AMD environment require query-string, which applies a new method `QueryRouter` to Backbone and returns the core Backbone Object.
+In a AMD environment, require query-string, which applies a new method `QueryRouter` to Backbone and returns the core Backbone Object.
 
 ```javascript
 require(['query-string'], function(Backbone) {
