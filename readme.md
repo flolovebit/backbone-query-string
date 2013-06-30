@@ -47,7 +47,7 @@ View the index.html in the example/ folder for use and example.
 Exposes `Backbone.QueryRouter` method to be used as Backbone.Router would.
 
 #use
-Use your router as documented by Backbone.Router but in callbacks the last argument will always be a param object. The query string is provided in the following format: `#/url/?query=1&string=hi`
+Use the router as documented by Backbone.Router, but in callbacks, the last argument will always be a param object. The query-string is provided in the following format: `#/url/?query=1&string=hi`
 ```javascript
 {
 
