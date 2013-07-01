@@ -1,14 +1,22 @@
 #Backbone Query-String
-A Backbone.Router extension that defines a new sub-class/constuctor-function. It will supply a query-string params object in route callbacks. The query-string is provided in the following format: `#/url/?query=1&string=hi`
+A Backbone.Router extension that defines a new sub-class/constructor-function. It will supply a query-string params object in route callbacks. The query-string is provided in the following format: `#/url/?query=1&string=hi`
 
-Current Version: `0.5.0`
+Current Version: `0.5.1`
 Tested with Backbone: `1.0 >=`
+
+Features:
+  * Lightweight and Efficient
+  * AMD support
+  * Abstracted from Backbone.Router to prevent future Backbone breaking changes
+  * Speed optimized
+  * Recover from regex string errors.
+  * We need battle-testers.
 
 #install
 
 Inline Script:
 
-Add query-string.js before backbone dependancies.
+Add query-string.js before backbone dependencies.
 
 ```html
 <script type="text/javascript" src="jquery-2.0.2.min.js"></script>
@@ -59,6 +67,9 @@ Use the router as documented by Backbone.Router, but in callbacks, the last argu
 ```
 
 #change log
+
+v0.5.1 - 7/1/13:
+  * Stability: recover from string errors with try catch
 
 v0.5.0 - 6/27/13:
   * complete rewrite of extraction method utilized to grab query string from matched routes

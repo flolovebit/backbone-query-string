@@ -29,7 +29,7 @@
  *   set backboneRequireLocation for amd backbone location
  *   set underscoreRequireLocation for amd underscore location
  * version:
- *   current: 0.5.0
+ *   current: 0.5.1
  */
 (function(root, factory) {
 
@@ -217,7 +217,9 @@
        *   Attempt to match the regex pattern
        *   then set the returned value to match.
        */
-      match = fragment.match(route);
+      try {
+        match = fragment.match(route);
+      } catch(e) {}
 
       /**
        * [info]
@@ -312,7 +314,7 @@
    *   version information for future use
    * @type {String}
    */
-  Backbone.QueryRouter.VERSION = '0.5.0';
+  Backbone.QueryRouter.VERSION = '0.5.1';
 
   /**
    * info:
